@@ -6,6 +6,7 @@
 	Feel free to use it
 */
 ?>
+<?php session_start(); ?> // Add this at the top of the page before <!DOCTYPE html> if not, the code won't work properly
 <?php
 if(isset($_POST['submit'])) {
 	if ($_SESSION['rand'] == $_POST['randcheck']) {

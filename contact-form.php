@@ -108,7 +108,7 @@ if(isset($_POST['submit'])) {
 				<div class="row mb-3">
 					<div class="col-12">
 						<label class="mb-2">Message<span>&#42;</span></label>
-						<textarea class="form-control" placeholder="Please enter your message here." maxlength="1000" name="message" rows="10" required><?php if( isset( $_POST['message'] ) && !isset($emailSent) ) { echo esc_attr($_POST['message']);} else { echo '';} ?></textarea>
+						<textarea id="message" class="form-control" placeholder="Please enter your message here." maxlength="1000" name="message" rows="10" required><?php if( isset( $_POST['message'] ) && !isset($emailSent) ) { echo esc_attr($_POST['message']);} else { echo '';} ?></textarea>
 					</div>
 				</div>
 				<div id="messagecharcounter" class="mb-3 text-end text-light">

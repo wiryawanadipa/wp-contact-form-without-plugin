@@ -37,13 +37,13 @@ if(isset($_POST['submit'])) {
 			$message = $sanitizemessage;
 		}
 		if(!isset($emptyNameError) && strlen($sanitizecontactName) < 51 && !isset($emptyEmailError) && strlen($sanitizeemail) < 81 && !isset($invalidEmailError) && !isset($emptyMessageError) && strlen($sanitizemessage) < 1001 && !empty($_POST['g-recaptcha-response'])) {
-			$secret = get_option( 'wa_recaptcha_secret_key' );
+			$secret = 'SECRET_KEY';
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$captcha = $_POST['g-recaptcha-response'];
 			$rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $captcha .'&remoteip='. $ip);
 			$valid = json_decode($rsp, true);
 			if($valid["success"] == true) {
-				$emailTo = get_option( 'wa_mail' );
+				$emailTo = 'YOUR_EMAIL';
 				$domain = strtoupper($_SERVER['HTTP_HOST']);
 				$subject = '[' . $domain . '] From ' . $name;
 				$body = 'Name: ' . $name . "\n\n" . 'Email: ' . $email . "\n\n" . 'Message: ' . $message;
@@ -136,7 +136,7 @@ if(isset($_POST['submit'])) {
 				</script>
 				<div class="row mb-4">
 					<div class="col-12 col-md-6 mb-4 mb-md-0">
-						<div class="g-recaptcha brochure__form__captcha" data-sitekey="<?php echo get_option( 'wa_recaptcha_site_key' ); ?>"></div>
+						<div class="g-recaptcha brochure__form__captcha" data-sitekey="SITE_KEY"></div>
 					</div>
 					<div class="col-12 col-md-6 mb-4 mb-md-0 text-start text-md-end">
 						<?php 

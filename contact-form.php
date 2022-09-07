@@ -8,10 +8,10 @@
 ?>
 <?php session_start(); ?> // Add this at the top of the page before <!DOCTYPE html> if not, the code won't work properly
 <?php
-$sanitizecontactName = sanitize_text_field($_POST['contactName']);
-$sanitizeemail = sanitize_text_field($_POST['email']);
-$sanitizemessage = sanitize_textarea_field($_POST['message']);
 if(isset($_POST['submit'])) {
+	$sanitizecontactName = sanitize_text_field($_POST['contactName']);
+	$sanitizeemail = sanitize_text_field($_POST['email']);
+	$sanitizemessage = sanitize_textarea_field($_POST['message']);
 	if ($_SESSION['rand'] == $_POST['randcheck']) {
 		if($sanitizecontactName === '') {
 			$emptyNameError = true;

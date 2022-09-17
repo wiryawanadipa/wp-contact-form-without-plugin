@@ -8,4 +8,5 @@ This is a contact form without plugin for WordPress
 - Make sure $_SERVER['SERVER_NAME'] = is your domain name (e.g. wiryawanadipa.com)
 
 Article: https://wiryawanadipa.com/blog/how-to-create-a-contact-form-in-wordpress-without-a-plugin-recaptcha/
+
 Demo: https://wiryawanadipa.com/contact/

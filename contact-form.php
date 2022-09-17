@@ -8,6 +8,7 @@
 ?>
 <?php session_start(); ?> // Add this at the top of the page before <!DOCTYPE html> if not, the code won't work properly
 <?php
+$maxMessageChar = 1000;
 if (isset($_POST['submit'])) {
 	$sanitizecontactName = sanitize_text_field($_POST['contactName']);
 	$sanitizeemail = sanitize_text_field($_POST['email']);
@@ -33,7 +34,6 @@ if (isset($_POST['submit'])) {
 		} else {
 			$email = $sanitizeemail;
 		}
-		$maxMessageChar = 1000;
 		if ($sanitizemessage === '') {
 			$emptyMessageError = true;
 		} else if ($countMessage > $maxMessageChar) {
@@ -42,13 +42,13 @@ if (isset($_POST['submit'])) {
 			$message = $sanitizemessage;
 		}
 		if (!isset($emptyNameError) && $countName < 51 && !isset($emptyEmailError) && $countEmail < 81 && !isset($invalidEmailError) && !isset($emptyMessageError) && $countMessage < ($maxMessageChar + 1) && !empty($_POST['g-recaptcha-response'])) {
-			$secret = SECRET_KEY;
+			$secret = get_option('wa_recaptcha_secret_key');
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$captcha = $_POST['g-recaptcha-response'];
 			$rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $captcha .'&remoteip='. $ip);
 			$valid = json_decode($rsp, true);
 			if ($valid["success"] == true) {
-				$emailTo = YOUR_EMAIL;
+				$emailTo = get_option('wa_mail');
 				$domain = strtoupper($_SERVER['HTTP_HOST']);
 				$subject = '[' . $domain . '] From ' . $name;
 				$body = 'Name: ' . $name . "\n\n" . 'Email: ' . $email . "\n\n" . 'Message: ' . $message;
@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
 				echo '<div class="p-3 my-2 bg-danger rounded-1"><i class="fa-solid fa-triangle-exclamation"></i> Please enter a message.</div>';
 			}
 			if (isset($longMessageError)) {
-				echo '<div class="p-3 my-2 bg-danger rounded-1"><i class="fa-solid fa-triangle-exclamation"></i> Your message is too long. Message should be no more than 1000 characters.</div>';
+				echo '<div class="p-3 my-2 bg-danger rounded-1"><i class="fa-solid fa-triangle-exclamation"></i> Your message is too long. Message should be no more than' . $maxMessageChar . 'characters.</div>';
 			}
 			if (empty($_POST['g-recaptcha-response'])) {
 				echo '<div class="p-3 my-2 bg-danger rounded-1"><i class="fa-solid fa-triangle-exclamation"></i> Please check the captcha.</div>';
@@ -112,7 +112,7 @@ if (isset($_POST['submit'])) {
 				<div class="row mb-3">
 					<div class="col-12">
 						<label class="mb-2">Message<span>&#42;</span></label>
-						<textarea id="message" class="form-control" placeholder="Please enter your message here." maxlength="1000" name="message" rows="6" required><?php if (isset($_POST['message']) && !isset($emailSent)) { echo $sanitizemessage; } else { echo ''; } ?></textarea>
+						<textarea id="message" class="form-control" placeholder="Please enter your message here." maxlength="<?php echo $maxMessageChar; ?>" name="message" rows="6" required><?php if (isset($_POST['message']) && !isset($emailSent)) { echo $sanitizemessage; } else { echo ''; } ?></textarea>
 					</div>
 				</div>
 				<?php
@@ -130,13 +130,13 @@ if (isset($_POST['submit'])) {
 				?>
 				<div id="messagecharcounter" class="mb-3 text-end <?php echo $color;  ?>">
 					<span id="typedchar"><?php if (isset($_POST['message']) && !isset($emailSent)) { echo $countMessage; } else { echo '0'; } ?></span>
-					<span id="maxchar">/ 1000</span>
+					<span id="maxchar">/ <?php echo $maxMessageChar; ?></span>
 				</div>
 				<script>
 				const messageElement = document.querySelector("#message");
 				const characterCounterElement = document.querySelector("#messagecharcounter");
 				const typedCharElement = document.querySelector("#typedchar");
-				const maxChar = 1000;
+				const maxChar = <?php echo $maxMessageChar; ?>;
 				message.addEventListener("input", event => {
 					const typedChar = message.value.length;
 					if (typedChar > maxChar) {
@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
 				</script>
 				<div class="row mb-4">
 					<div class="col-12 col-md-6 mb-4 mb-md-0">
-						<div class="g-recaptcha brochure__form__captcha" data-sitekey="SITE_KEY"></div>
+						<div class="g-recaptcha brochure__form__captcha" data-sitekey="<?php echo get_option('wa_recaptcha_site_key'); ?>"></div>
 					</div>
 					<div class="col-12 col-md-6 mb-4 mb-md-0 text-start text-md-end">
 						<?php 

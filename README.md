@@ -1,4 +1,4 @@
-# Wordpress Contact Form with reCaptcha without Plugin
+# WordPress Contact Form with reCaptcha without Plugin
 This is a contact form without plugin for WordPress
 
 # Note

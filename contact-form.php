@@ -137,8 +137,8 @@ if (isset($_POST['submit'])) {
 				const characterCounterElement = document.querySelector("#messagecharcounter");
 				const typedCharElement = document.querySelector("#typedchar");
 				const maxChar = <?php echo $maxMessageChar; ?>;
-				message.addEventListener("input", event => {
-					const typedChar = message.value.length;
+				messageElement.addEventListener("input", event => {
+					const typedChar = messageElement.value.length;
 					if (typedChar > maxChar) {
 						return false;
 					}

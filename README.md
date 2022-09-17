@@ -1,4 +1,4 @@
-# Code to Create Contact Form without Plugin in Wordpress with reCaptcha
+# Wordpress Contact Form with reCaptcha without Plugin
 This is a contact form without plugin for WordPress
 
 # Note
